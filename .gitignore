@@ -1,0 +1,14 @@
+# swap files
+*.swp
+
+# build files
+build/
+
+# vscode files
+.vscode/
+
+# vscode config files
+*.json
+
+# google test
+googletest/
