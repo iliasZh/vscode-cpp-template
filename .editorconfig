@@ -1,4 +1,4 @@
-[*.{cpp,h,hpp,txt,clang-format,clang-tidy}]
+[*.{cpp,h,hpp,txt,clang*}]
 charset = utf-8
 indent_style = tab
 indent_size = 4

@@ -3,7 +3,7 @@ Standard:									Latest
 AccessModifierOffset:						-4
 AlignConsecutiveAssignments:				true
 AlignConsecutiveDeclarations:				true
-#AlignConsecutiveMacros:					true
+AlignConsecutiveMacros:						true
 AlignEscapedNewlines:						Left
 AlignTrailingComments:						true
 AllowAllArgumentsOnNextLine:				true
