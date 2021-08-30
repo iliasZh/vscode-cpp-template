@@ -9,3 +9,6 @@ build/
 
 # google test
 googletest/
+
+# clangd cache
+.cache/
