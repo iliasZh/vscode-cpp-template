@@ -17,50 +17,44 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${HEADER_DIR})
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCES} ${HEADERS})
 
-#[[ 
+#[[ uncomment this block to enable google test
 
-# uncomment this block to enable google test
-# how to fetch googletest:
-# $ git submodule add https://github.com/google/googletest.git googletest
-
+# google test section
 set(TEST_SUBPROJECT_NAME "unit_tests")
 
-enable_testing()
-
-add_subdirectory(
-	"${CMAKE_CURRENT_SOURCE_DIR}/googletest"
-	"googletest" # place output files here
+include(FetchContent)
+FetchContent_Declare(
+	googletest
+	URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
 )
+
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+if(MSVC)
+	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+endif()
+
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
 
 add_executable(
 	${TEST_SUBPROJECT_NAME}
 	test/test.cpp
 )
 
-# add source files to the include dirs for the test target
-target_include_directories(
-	${TEST_SUBPROJECT_NAME} PRIVATE
-	"${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE_DIR}"
-)
-target_include_directories(
-	${TEST_SUBPROJECT_NAME} PRIVATE
-	"${CMAKE_CURRENT_SOURCE_DIR}/${HEADER_DIR}"
-)
-
-# link test target with gtest
 target_link_libraries(
-	${TEST_SUBPROJECT_NAME} PRIVATE
+	${TEST_SUBPROJECT_NAME}
 	gtest_main
 )
 
-# see https://google.github.io/googletest/quickstart-cmake.html
-include(GoogleTest) # enable gtest CMake module
-gtest_discover_tests(${TEST_SUBPROJECT_NAME}) # discover tests included in the binary
+target_include_directories(
+	${TEST_SUBPROJECT_NAME}
+	PRIVATE
+	${HEADER_DIR}
+)
 
-if (MSVC)
-	# see https://github.com/google/googletest/blob/master/googletest/README.md
-	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-endif()
+include(GoogleTest)
+gtest_discover_tests(${TEST_SUBPROJECT_NAME})
 
 ]]
 
