@@ -7,8 +7,5 @@ build/
 # vscode files
 .vscode/
 
-# google test
-googletest/
-
 # clangd cache
 .cache/
