@@ -4,8 +4,16 @@ project("placeholder")
 
 set(PROJECT_CXX_STANDARD cxx_std_17) # safe default
 
-set(HEADERS "") # don't forget to uncomment TRANSFORM HEADERS when you add headers
-set(SOURCES "main.cpp")
+# don't forget to uncomment TRANSFORM HEADERS when you add headers
+set(
+	HEADERS
+	""
+)
+
+set(
+	SOURCES
+	"main.cpp"
+)
 
 set(HEADER_DIR "include/")
 set(SOURCE_DIR "src/")
@@ -13,8 +21,12 @@ set(SOURCE_DIR "src/")
 #list(TRANSFORM HEADERS PREPEND ${HEADER_DIR})
 list(TRANSFORM SOURCES PREPEND ${SOURCE_DIR})
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_executable(
+	${PROJECT_NAME}
+	${SOURCES} ${HEADERS}
+)
 
+# set project's C++ standard
 target_compile_features(
 	${PROJECT_NAME} PRIVATE
 	${PROJECT_CXX_STANDARD}
@@ -49,11 +61,20 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_executable(
-	${TEST_SUBPROJECT_NAME}
-	test/test.cpp
+set(TEST_DIR "test/")
+set(
+	TEST_SOURCES
+	"test.cpp"
 )
 
+list(TRANSFORM TEST_SOURCES PREPEND ${TEST_DIR})
+
+add_executable(
+	${TEST_SUBPROJECT_NAME}
+	${TEST_SOURCES}
+)
+
+# set test project's C++ standard
 target_compile_features(
 	${TEST_SUBPROJECT_NAME} PRIVATE
 	${PROJECT_CXX_STANDARD}
@@ -65,18 +86,16 @@ target_link_libraries(
 )
 
 target_include_directories(
-	${TEST_SUBPROJECT_NAME}
-	PRIVATE
+	${TEST_SUBPROJECT_NAME} PRIVATE
 	${HEADER_DIR}
 )
 
 include(GoogleTest)
 gtest_discover_tests(${TEST_SUBPROJECT_NAME})
-
 ]]
 
 
-# project compiler flags
+# man I love warnings! please send more
 if (MSVC)
 	target_compile_options(
 		${PROJECT_NAME} PRIVATE
@@ -88,25 +107,24 @@ if (MSVC)
 		"/w14555" "/w14619" "/w14826" "/w14905"
 		"/w14906" "/w14928"
 	)
-else() # gcc or clang
+else() # gcc and clang
 	target_compile_options(
 		${PROJECT_NAME} PRIVATE
-		"-Wall" "-Wextra" "-Wshadow" "-Wnon-virtual-dtor" "-pedantic"
-		"-Wunused" "-Wconversion" "-Wsign-conversion"
-		"-Wnull-dereference" "-Wdouble-promotion"
-		"-Woverloaded-virtual" "-Wpedantic"
-		"-Wcast-align" "-Wformat=2"
+		"-Wall" "-Wextra" "-Wshadow" "-pedantic"
+		"-Wnon-virtual-dtor"	"-Wunused"
+		"-Wconversion"			"-Wsign-conversion"
+		"-Wnull-dereference"	"-Wdouble-promotion"
+		"-Woverloaded-virtual"	"-Wpedantic"
+		"-Wcast-align"			"-Wformat=2"
 	)
 endif()
 
+# gcc exclusive
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	target_compile_options(
 		${PROJECT_NAME} PRIVATE
-		"-Wmisleading-indentation"
-		"-Wduplicated-cond"
-		"-Wduplicated-branches"
-		"-Wlogical-op"
-		"-Wnull-dereference"
-		"-Wuseless-cast"
+		"-Wmisleading-indentation"	"-Wduplicated-cond"
+		"-Wduplicated-branches"		"-Wlogical-op"
+		"-Wnull-dereference"		"-Wuseless-cast"
 	)
 endif()
