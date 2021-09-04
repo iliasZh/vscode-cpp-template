@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION "3.21")
 
 project("placeholder")
 
-set(CMAKE_CXX_STANDARD 17)
+set(PROJECT_CXX_STANDARD cxx_std_17) # safe default
 
-set(HEADERS "")
+set(HEADERS "") # don't forget to uncomment TRANSFORM HEADERS when you add headers
 set(SOURCES "main.cpp")
 
 set(HEADER_DIR "include/")
@@ -14,13 +14,25 @@ set(SOURCE_DIR "src/")
 list(TRANSFORM SOURCES PREPEND ${SOURCE_DIR})
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-target_include_directories(${PROJECT_NAME} PRIVATE ${HEADER_DIR})
-target_sources(${PROJECT_NAME} PRIVATE ${SOURCES} ${HEADERS})
 
-#[[ uncomment this block to enable google test
+target_compile_features(
+	${PROJECT_NAME} PRIVATE
+	${PROJECT_CXX_STANDARD}
+)
+
+target_include_directories(
+	${PROJECT_NAME} PRIVATE
+	${HEADER_DIR}
+)
+target_sources(
+	${PROJECT_NAME} PRIVATE
+	${SOURCES} ${HEADERS}
+)
+
+#[[ # uncomment this block to enable google test
 
 # google test section
-set(TEST_SUBPROJECT_NAME "unit_tests")
+set(TEST_SUBPROJECT_NAME "unit-tests")
 
 include(FetchContent)
 FetchContent_Declare(
@@ -42,6 +54,11 @@ add_executable(
 	test/test.cpp
 )
 
+target_compile_features(
+	${TEST_SUBPROJECT_NAME} PRIVATE
+	${PROJECT_CXX_STANDARD}
+)
+
 target_link_libraries(
 	${TEST_SUBPROJECT_NAME}
 	gtest_main
@@ -57,6 +74,7 @@ include(GoogleTest)
 gtest_discover_tests(${TEST_SUBPROJECT_NAME})
 
 ]]
+
 
 # project compiler flags
 if (MSVC)
