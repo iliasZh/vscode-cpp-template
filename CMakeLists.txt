@@ -4,7 +4,6 @@ project("placeholder")
 
 set(PROJECT_CXX_STANDARD cxx_std_17) # safe default
 
-# don't forget to uncomment TRANSFORM HEADERS when you add headers
 set(
 	HEADERS
 	""
@@ -18,7 +17,7 @@ set(
 set(HEADER_DIR "include/")
 set(SOURCE_DIR "src/")
 
-#list(TRANSFORM HEADERS PREPEND ${HEADER_DIR})
+list(TRANSFORM HEADERS PREPEND ${HEADER_DIR})
 list(TRANSFORM SOURCES PREPEND ${SOURCE_DIR})
 
 add_executable(
