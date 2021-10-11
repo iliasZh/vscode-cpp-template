@@ -39,10 +39,12 @@ BraceWrapping:
 BreakBeforeTernaryOperators:				true
 BreakConstructorInitializers:				BeforeComma
 BreakStringLiterals:						true
+ColumnLimit:								100
 Cpp11BracedListStyle:						false
+EmptyLineBeforeAccessModifier:				Never
 FixNamespaceComments:						true
 IndentCaseLabels:							false
-IndentPPDirectives:							BeforeHash
+IndentPPDirectives:							None
 KeepEmptyLinesAtTheStartOfBlocks:			false
 NamespaceIndentation:						Inner
 PointerAlignment:							Left
