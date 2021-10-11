@@ -4,6 +4,10 @@ project("placeholder")
 
 set(PROJECT_CXX_STANDARD cxx_std_17) # safe default
 
+# selects for all following targets a multi-threaded statically-linked
+# runtime library with or without debug information depending on the configuration.
+# set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 set(
 	HEADERS
 	""
