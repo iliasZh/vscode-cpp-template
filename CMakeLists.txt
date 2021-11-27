@@ -25,23 +25,19 @@ list(TRANSFORM HEADERS PREPEND ${HEADER_DIR})
 list(TRANSFORM SOURCES PREPEND ${SOURCE_DIR})
 
 add_executable(
-	${PROJECT_NAME}
-	${SOURCES} ${HEADERS}
+	${PROJECT_NAME} ${SOURCES} ${HEADERS}
 )
 
 # set project's C++ standard
 target_compile_features(
-	${PROJECT_NAME} PRIVATE
-	${PROJECT_CXX_STANDARD}
+	${PROJECT_NAME} PRIVATE ${PROJECT_CXX_STANDARD}
 )
 
 target_include_directories(
-	${PROJECT_NAME} PRIVATE
-	${HEADER_DIR}
+	${PROJECT_NAME} PRIVATE ${HEADER_DIR}
 )
 target_sources(
-	${PROJECT_NAME} PRIVATE
-	${SOURCES} ${HEADERS}
+	${PROJECT_NAME} PRIVATE ${SOURCES} ${HEADERS}
 )
 
 #[[ # uncomment this block to enable google test
@@ -101,7 +97,8 @@ gtest_discover_tests(${TEST_SUBPROJECT_NAME})
 # man I love warnings! please send more
 if (MSVC)
 	target_compile_options(
-		${PROJECT_NAME} PRIVATE
+		${PROJECT_NAME}
+		PRIVATE
 		"/permissive-"
 		"/W4" "/w14640"
 		"/w14242" "/w14254" "/w14263" "/w14265"
@@ -110,9 +107,12 @@ if (MSVC)
 		"/w14555" "/w14619" "/w14826" "/w14905"
 		"/w14906" "/w14928"
 	)
-else() # gcc and clang
+endif()
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR MINGW)
 	target_compile_options(
-		${PROJECT_NAME} PRIVATE
+		${PROJECT_NAME}
+		PRIVATE
 		"-Wall" "-Wextra" "-Wshadow" "-pedantic"
 		"-Wnon-virtual-dtor"	"-Wunused"
 		"-Wconversion"			"-Wsign-conversion"
@@ -122,10 +122,11 @@ else() # gcc and clang
 	)
 endif()
 
-# gcc exclusive
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+# gcc exclusive flags
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR MINGW)
 	target_compile_options(
-		${PROJECT_NAME} PRIVATE
+		${PROJECT_NAME}
+		PRIVATE
 		"-Wmisleading-indentation"	"-Wduplicated-cond"
 		"-Wduplicated-branches"		"-Wlogical-op"
 		"-Wnull-dereference"		"-Wuseless-cast"
