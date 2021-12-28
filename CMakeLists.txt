@@ -7,7 +7,6 @@ set(PROJECT_CXX_STANDARD cxx_std_17) # safe default
 # selects for all following targets a multi-threaded statically-linked
 # runtime library with or without debug information depending on the configuration.
 # set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-
 set(
 	HEADERS
 	""
@@ -93,9 +92,11 @@ include(GoogleTest)
 gtest_discover_tests(${TEST_SUBPROJECT_NAME})
 ]]
 
-
 # man I love warnings! please send more
-if (MSVC)
+
+# cl.exe or clang-cl.exe
+if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC")
+	OR MSVC)
 	target_compile_options(
 		${PROJECT_NAME}
 		PRIVATE
@@ -109,26 +110,30 @@ if (MSVC)
 	)
 endif()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR MINGW)
+# g++ or clang++
+if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
+	OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+	OR MINGW)
 	target_compile_options(
 		${PROJECT_NAME}
 		PRIVATE
 		"-Wall" "-Wextra" "-Wshadow" "-pedantic"
-		"-Wnon-virtual-dtor"	"-Wunused"
-		"-Wconversion"			"-Wsign-conversion"
-		"-Wnull-dereference"	"-Wdouble-promotion"
-		"-Woverloaded-virtual"	"-Wpedantic"
-		"-Wcast-align"			"-Wformat=2"
+		"-Wnon-virtual-dtor" "-Wunused"
+		"-Wconversion" "-Wsign-conversion"
+		"-Wnull-dereference" "-Wdouble-promotion"
+		"-Woverloaded-virtual" "-Wpedantic"
+		"-Wcast-align" "-Wformat=2"
 	)
 endif()
 
 # gcc exclusive flags
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR MINGW)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+	OR MINGW)
 	target_compile_options(
 		${PROJECT_NAME}
 		PRIVATE
-		"-Wmisleading-indentation"	"-Wduplicated-cond"
-		"-Wduplicated-branches"		"-Wlogical-op"
-		"-Wnull-dereference"		"-Wuseless-cast"
+		"-Wmisleading-indentation" "-Wduplicated-cond"
+		"-Wduplicated-branches" "-Wlogical-op"
+		"-Wnull-dereference" "-Wuseless-cast"
 	)
 endif()
