@@ -4,9 +4,12 @@ project("placeholder")
 
 set(PROJECT_CXX_STANDARD cxx_std_17) # safe default
 
-# selects for all following targets a multi-threaded statically-linked
-# runtime library with or without debug information depending on the configuration.
-# set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+# Selects a multi-threaded statically-linked runtime library
+# with or without debug information depending on the configuration for all following targets.
+#
+# Comment this line out or add "DLL" to this variable to use dynamically linked runtime.
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 set(
 	HEADERS
 	""
@@ -39,7 +42,7 @@ target_sources(
 	${PROJECT_NAME} PRIVATE ${SOURCES} ${HEADERS}
 )
 
-#[[ # uncomment this block to enable google test
+# comment this block out with "#[[ ]]" to disable google test
 
 # google test section
 set(TEST_SUBPROJECT_NAME "unit-tests")
@@ -90,10 +93,10 @@ target_include_directories(
 
 include(GoogleTest)
 gtest_discover_tests(${TEST_SUBPROJECT_NAME})
-]]
+
+# end of google test block
 
 # man I love warnings! please send more
-
 # cl.exe or clang-cl.exe
 if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC")
 	OR MSVC)
