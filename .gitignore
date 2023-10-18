@@ -21,3 +21,6 @@ cmake*/
 
 # clangd cache
 .cache/
+
+# binaries
+*.exe
