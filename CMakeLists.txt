@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION "3.21")
 
 project("placeholder")
 
-set(PROJECT_CXX_STANDARD cxx_std_17) # safe default
+set(PROJECT_CXX_STANDARD cxx_std_23)
 
 # Selects a multi-threaded statically-linked runtime library
 # with or without debug information depending on the configuration for all following targets.
