@@ -7,7 +7,7 @@ Checks: >
   performance-*,
   portability-*,
   readability-*,
-  modernize-*,-modernize-use-trailing-return-type*,
+  modernize-*,
   misc-*,
 # don't use tabs for indentation, use spaces...
 # I've wasted too much time on this
